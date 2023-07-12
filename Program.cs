@@ -5,7 +5,10 @@
         static void Main(string[] args)
         {
             BookOperation Operations = new BookOperation();
-            Console.WriteLine("/n 1.Enter a contact to add to to addresbook : ");
+            Console.WriteLine("\n 1.Enter a contact to add to to addresbook : " +
+                              "\n 2.Display Contacts: " +
+                              "\n 5.Exit addressbook : "
+                );
 
             Console.WriteLine("\n Enter option:");
             int option = Convert.ToInt32(Console.ReadLine());
@@ -31,6 +34,16 @@
 
                         Contact contact = new Contact(FirstName, LastName, PhoneNumber, Email, City, State, Zip);
                         Operations.AddContact(contact);
+                        break;
+                    }
+                case 2:
+                    {
+                        Operations.DisplayContacts();
+                        break;
+                    }
+                case 5:
+                    {
+                        Environment.Exit(0);
                         break;
                     }
             }

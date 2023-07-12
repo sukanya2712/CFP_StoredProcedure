@@ -23,7 +23,7 @@ namespace AddressBookADO1
             {
                 sqlConnection.Open();
                 string query = "AddContact";
-                SqlTransaction sqlTransaction = sqlConnection.BeginTransaction(); 
+                SqlTransaction sqlTransaction = sqlConnection.BeginTransaction();
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection, sqlTransaction);
                 sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
                 sqlCommand.Parameters.AddWithValue("@FirstName", contact.FirstName);
@@ -67,6 +67,63 @@ namespace AddressBookADO1
             {
                 sqlConnection.Close();
             }
+        }
+
+        public bool DisplayContacts()
+        {
+            try
+            {
+                List<Contact> contactslist = new List<Contact>();
+
+
+                sqlConnection.Open();
+                string query = "SELECT * FROM contacts";
+                SqlCommand cmd = new SqlCommand(query, sqlConnection);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Contact contact = new Contact()
+                    {
+                        ID = (int)reader["ID"],
+                        FirstName = (string)reader["FirstName"],
+                        LastName = (string)reader["LastName"],
+                        Email = (string)reader["Email"],
+                        PhoneNumber = (string)reader["PhoneNumber"],
+                        City = (string)reader["City"],
+                        SState = (string)reader["SState"],
+                        Zip = (string)reader["Zip"],
+                    };
+
+                    contactslist.Add(contact);
+                }
+                foreach (Contact contact in contactslist)
+                {
+                    Console.WriteLine($"ID: {contact.ID}");
+                    Console.WriteLine($"First Name: {contact.FirstName}");
+                    Console.WriteLine($"Last Name: {contact.LastName}");
+                    Console.WriteLine($"Email: {contact.Email}");
+                    Console.WriteLine($"Phone Number: {contact.PhoneNumber}");
+                    Console.WriteLine($"City: {contact.City}");
+                    Console.WriteLine($"State: {contact.SState}");
+                    Console.WriteLine($"Zip: {contact.Zip}");
+                    Console.WriteLine("----------------------");
+                }
+
+
+                return true;
+
+            }
+            catch(Exception ex ) 
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+            finally
+            {
+                connection.Clone();
+            }
+            
         }
 
     }
